@@ -1,6 +1,4 @@
 class Coordinate:
-    def __init__(self) -> None:
-        pass
 
     @classmethod
     def coord_right(self, start_coord, spaces, board_size):

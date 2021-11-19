@@ -15,6 +15,7 @@ class Human_Player:
         On your board ship locations will be represented by a letter in each coordinate (C for Carrier, B for Battleship, D for Destroyer and S for Submarine).\n
         For both the computer and player guesses that are hits will be represented with an 'X' and misses with an 'O'.
         ''')
+        input('\nPress enter when you are ready to continue')
 
     def ship_input_introduction(self):
         print('''
@@ -27,6 +28,7 @@ class Human_Player:
         Destroyer -  3   -   2
         Submarine -  2   -   3
         ''')
+        input('\nPress enter when you are ready to continue')
 
     def format_input(self, coord):
         coord = coord.replace(' ', '')
@@ -37,17 +39,17 @@ class Human_Player:
         else:
             print('Sorry that is not a valid coordinate, it must be a letter from A-J and a number from 1-10, eg A1')
         
-    def ship_input(self, ship_type, ship_size, player_ship_instance, player_board, ship_number, ship_letter):
-        coord = input(f'Enter a coordinate for your {ship_number} {ship_type}   ')
+    def ship_input(self, ship_type, ship_size, player_ship_instance, player_board, ship_number, ship_letter, dict_name):
+        coord = input(f'Enter a coordinate for your{ship_number} {ship_type}   ')
         format_coord = self.format_input(coord)
         if format_coord == None:
-            self.ship_input(ship_type, ship_size, player_ship_instance, player_board, ship_number, ship_letter)
+            self.ship_input(ship_type, ship_size, player_ship_instance, player_board, ship_number, ship_letter, dict_name)
         else:
             if player_ship_instance.check_start_loc(format_coord):
                 print('Sorry this coordinate is already occupied!')
-                self.ship_input(ship_type, ship_size, player_ship_instance, player_board, ship_number, ship_letter)               
+                self.ship_input(ship_type, ship_size, player_ship_instance, player_board, ship_number, ship_letter, dict_name)               
             else:
-                while True:
+                while True:#use book database menu as example to stream line this code, could have menu function that returns value that then calls the right orientation?
                     orientation = input('''From your coordinate what orientation would you like to place your ship on?\nenter 'up', 'down', 'left' or 'right':   ''')
                     if orientation.lower() == 'up':
                         ship_location = Coordinate.coord_up(format_coord, ship_size, 10)
@@ -57,10 +59,10 @@ class Human_Player:
                             if new_start_coor_option == '1':
                                 pass
                             else:
-                                self.ship_input(ship_type, ship_size, player_ship_instance, player_board, ship_number, ship_letter)
+                                self.ship_input(ship_type, ship_size, player_ship_instance, player_board, ship_number, ship_letter, dict_name)
                         else:
-                            player_ship_instance.place_ship(ship_location)
-                            print(player_ship_instance.locations)
+                            player_ship_instance.place_ship(ship_location, dict_name)
+                            print(player_ship_instance.locations.items())
                             player_board.player_set_ship(ship_location, ship_letter)
                             break
                     elif orientation.lower() == 'down':
@@ -71,10 +73,10 @@ class Human_Player:
                             if new_start_coor_option == '1':
                                 pass
                             else:
-                                self.ship_input(ship_type, ship_size, player_ship_instance, player_board, ship_number, ship_letter)
+                                self.ship_input(ship_type, ship_size, player_ship_instance, player_board, ship_number, ship_letter, dict_name)
                         else:
-                            player_ship_instance.place_ship(ship_location)
-                            print(player_ship_instance.locations)
+                            player_ship_instance.place_ship(ship_location, dict_name)
+                            print(player_ship_instance.locations.items())
                             player_board.player_set_ship(ship_location, ship_letter)
                             break
                     elif orientation.lower() == 'left':
@@ -85,10 +87,10 @@ class Human_Player:
                             if new_start_coor_option == '1':
                                 pass
                             else:
-                                self.ship_input(ship_type, ship_size, player_ship_instance, player_board, ship_number, ship_letter)
+                                self.ship_input(ship_type, ship_size, player_ship_instance, player_board, ship_number, ship_letter, dict_name)
                         else:
-                            player_ship_instance.place_ship(ship_location)
-                            print(player_ship_instance.locations)
+                            player_ship_instance.place_ship(ship_location, dict_name)
+                            print(player_ship_instance.locations.items())
                             player_board.player_set_ship(ship_location, ship_letter)
                             break
                     elif orientation.lower() == 'right':
@@ -99,10 +101,10 @@ class Human_Player:
                             if new_start_coor_option == '1':
                                 pass
                             else:
-                                self.ship_input(ship_type, ship_size, player_ship_instance, player_board, ship_number, ship_letter)
+                                self.ship_input(ship_type, ship_size, player_ship_instance, player_board, ship_number, ship_letter, dict_name)
                         else:
-                            player_ship_instance.place_ship(ship_location)
-                            print(player_ship_instance.locations)
+                            player_ship_instance.place_ship(ship_location, dict_name)
+                            print(player_ship_instance.locations.items())
                             player_board.player_set_ship(ship_location, ship_letter)
                             break
                     else:
@@ -111,14 +113,20 @@ class Human_Player:
     def player_guess(self, computer_ship_instance, computer_board_instance):
         player_guess = input('enter a coordinate to shoot at   ')
         format_guess = self.format_input(player_guess)
-        if format_guess in self.guesses:
-            print('Sorry you have already guessed this coordinate')
+        if format_guess == None:
             self.player_guess(computer_ship_instance, computer_board_instance)
-        else:
-            self.guesses.append(format_guess)
-            if computer_ship_instance.does_this_hit(format_guess):
-                print('you hit!')
-                computer_board_instance.update_board(format_guess, 'X')
+        else:       
+            if format_guess in self.guesses:
+                print('Sorry you have already guessed this coordinate')
+                self.player_guess(computer_ship_instance, computer_board_instance)
             else:
-                print('you missed!')
-                computer_board_instance.update_board(format_guess, 'O')
+                self.guesses.append(format_guess)
+                if computer_ship_instance.does_this_hit(format_guess):
+                    print('you hit!')
+                    computer_board_instance.update_board(format_guess, 'X')
+                    sunk, ship_type = computer_ship_instance.has_ship_sunk(computer_ship_instance)
+                    if sunk:
+                        print(f'You have sunk an enemy {ship_type}!')
+                else:
+                    print('you missed!')
+                    computer_board_instance.update_board(format_guess, 'O')

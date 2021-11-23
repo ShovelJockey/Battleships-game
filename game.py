@@ -37,16 +37,18 @@ class Game:
         self.computer.create_computer_ships(2, self.computer_ships, 'Submarine 1')
         self.computer.create_computer_ships(2, self.computer_ships, 'Submarine 2')
         self.computer.create_computer_ships(2, self.computer_ships, 'Submarine 3')
+        print(self.computer_ships.locations)
+        print(self.player_ships.locations)
 
     def game_running(self):
         while True:
-            self.player.player_guess(self.computer_ships, self.computer_board)
+            self.player.player_guess(self.computer_ships, self.computer_board, self.player)
             if self.computer_ships.hit_count >= 25:
                 print('you have destroyed all the enemy ships, you win!')
                 break
             else:
-                time.sleep(1)
-                self.computer.computer_guess(self.player_ships, self.player_board)
+                input('Press enter to end your turn ')
+                self.computer.computer_guess(self.player_ships, self.player_board, self.computer)
                 if self.player_ships.hit_count >= 25:
                     print('The computer has destroyed all your ships, you lose!')
                     break

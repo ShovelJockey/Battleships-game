@@ -1,7 +1,7 @@
 from board import Board
-from computer import Computer_Player
+from computer import ComputerPlayer
 from coordinate import Coordinate
-from player import Human_Player
+from player import HumanPlayer
 from ship import Ships
 import time
 
@@ -9,8 +9,8 @@ import time
 class Game:
 
     def __init__(self):
-        self.player = Human_Player()
-        self.computer = Computer_Player()
+        self.player = HumanPlayer()
+        self.computer = ComputerPlayer()
         self.player_board = Board(10, 'Player Board')
         self.computer_board = Board(10, 'Computer Board')
         self.player_ships = Ships()

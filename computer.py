@@ -2,7 +2,7 @@ import random
 from coordinate import Coordinate
 
 
-class Computer_Player:
+class ComputerPlayer:
 
     def __init__(self):
         self.guesses = []
@@ -42,16 +42,16 @@ class Computer_Player:
                 computer_ship_instance.place_ship(ship_location, dict_name)
 
     def computer_guess(self, player_ship_instance, player_board_instance, computer_instance):
-        if not self.has_hit:      
-            self.rand_comp_guess(player_ship_instance, player_board_instance, computer_instance)
-        elif self.has_hit:
-            if not self.checking_adjacent:
-                if not self.adjacent_hit:
-                    self.comp_find_adj_hit_guess(player_ship_instance, player_board_instance, computer_instance)
-                elif self.adjacent_hit:
-                    self.comp_found_adj_hit_guess(player_ship_instance, player_board_instance, computer_instance)
-            elif self.checking_adjacent:
+        if self.has_hit:
+            if self.checking_adjacent:
                 self.comp_get_adj_guess(player_ship_instance, player_board_instance, computer_instance)
+            else:
+                if self.adjacent_hit:
+                    self.comp_found_adj_hit_guess(player_ship_instance, player_board_instance, computer_instance)
+                else:
+                    self.comp_find_adj_hit_guess(player_ship_instance, player_board_instance, computer_instance)
+        else:
+            self.rand_comp_guess(player_ship_instance, player_board_instance, computer_instance)
 
     def rand_comp_guess(self, player_ship_instance, player_board_instance, computer_instance):
         comp_guess = (random.randint(0, 9), random.randint(0, 9))
@@ -64,9 +64,10 @@ class Computer_Player:
                 self.last_rand_guess_loc = comp_guess
                 print(f'The computer has hit your ship at {output_guess}')
                 player_board_instance.update_board(comp_guess, 'X')
-                sunk = player_ship_instance.has_ship_sunk(computer_instance)
-                if sunk:
-                    print(f'The computer sunk your {player_ship_instance.sunk_ship_names[-1]}!')
+                sunk_ship = player_ship_instance.has_ship_sunk(computer_instance)
+                if sunk_ship:
+                    sunk_ship = (sunk_ship[0]).split(' ', 1)
+                    print(f'You have sunk an enemy {sunk_ship}!')
                 else:
                     self.has_hit = True          
             else:
@@ -83,9 +84,10 @@ class Computer_Player:
         if player_ship_instance.does_this_hit(comp_guess):#check if rand guess from adjacent coords hits
             print(f'The computer has hit your ship at {output_guess}')
             player_board_instance.update_board(comp_guess, 'X')
-            sunk = player_ship_instance.has_ship_sunk(computer_instance)
-            if sunk:  #if it sinks it resets has_hit back to making random guesses
-                print(f'The computer sunk your {player_ship_instance.sunk_ship_names[-1]}!')
+            sunk_ship = player_ship_instance.has_ship_sunk(computer_instance)
+            if sunk_ship:
+                sunk_ship = (sunk_ship[0]).split(' ', 1)
+                print(f'You have sunk an enemy {sunk_ship}!')
                 self.has_hit = False
             else:
                 self.adjacent_hit_loc = comp_guess
@@ -107,9 +109,10 @@ class Computer_Player:
             if player_ship_instance.does_this_hit(comp_guess):#check if rand guess from adjacent coords hits
                 print(f'The computer has hit your ship at {output_guess}')
                 player_board_instance.update_board(comp_guess, 'X')
-                sunk = player_ship_instance.has_ship_sunk(computer_instance)
-                if sunk:  #if it sinks it resets has_hit back to making random guesses
-                    print(f'The computer sunk your {player_ship_instance.sunk_ship_names[-1]}!')
+                sunk_ship = player_ship_instance.has_ship_sunk(computer_instance)
+                if sunk_ship:
+                    sunk_ship = (sunk_ship[0]).split(' ', 1)
+                    print(f'You have sunk an enemy {sunk_ship}!')
                     self.has_hit = False
                     self.adjacent_hit = False
                 else:
@@ -127,9 +130,10 @@ class Computer_Player:
             if player_ship_instance.does_this_hit(comp_guess):
                 print(f'The computer has hit your ship at {output_guess}')
                 player_board_instance.update_board(comp_guess, 'X')
-                sunk = player_ship_instance.has_ship_sunk(computer_instance)
-                if sunk:
-                    print(f'The computer sunk your {player_ship_instance.sunk_ship_names[-1]}!')
+                sunk_ship = player_ship_instance.has_ship_sunk(computer_instance)
+                if sunk_ship:
+                    sunk_ship = (sunk_ship[0]).split(' ', 1)
+                    print(f'You have sunk an enemy {sunk_ship}!')
                     self.has_hit = False
                     self.checking_adjacent = False
                 else:

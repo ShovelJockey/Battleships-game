@@ -50,7 +50,7 @@ class HumanPlayer:
             if new_start_coor_option == '1':
                 return True
             else:
-                self.ship_input(ship_type, ship_size, player_ship_instance, player_board, ship_number, ship_letter, dict_name)
+                return self.ship_input(ship_type, ship_size, player_ship_instance, player_board, ship_number, ship_letter, dict_name)
         else:
             player_ship_instance.place_ship(ship_location, dict_name)
             print(player_ship_instance.locations.items())
@@ -62,15 +62,15 @@ class HumanPlayer:
         format_coord = self.format_input(coord)
         if format_coord == None:
             print('Sorry thats not a valid coordinate')
-            self.ship_input(ship_type, ship_size, player_ship_instance, player_board, ship_number, ship_letter, dict_name)
+            return self.ship_input(ship_type, ship_size, player_ship_instance, player_board, ship_number, ship_letter, dict_name)
         if player_ship_instance.check_start_loc(format_coord):
             print('Sorry this coordinate is already occupied!')
-            self.ship_input(ship_type, ship_size, player_ship_instance, player_board, ship_number, ship_letter, dict_name)                              
+            return self.ship_input(ship_type, ship_size, player_ship_instance, player_board, ship_number, ship_letter, dict_name)                              
         not_placed = True
         while not_placed == True:                                     
             orientation = input('''From your coordinate what orientation would you like to place your ship on?\nenter 'up', 'down', 'left' or 'right':   ''')
             if orientation.lower() == 'up':
-                not_placed = self.ship_orientation(format_coord, Coordinate.coords_up, ship_type, ship_size, player_ship_instance, player_board, ship_number, ship_letter, dict_name)
+                not_placed = self.ship_orientation(format_coord, Coordinate.coords_up, ship_type, ship_size, player_ship_instance, player_board, ship_number, ship_letter, dict_name) #recursive functions can only return first value you dumb dumb
             elif orientation.lower() == 'down':
                 not_placed = self.ship_orientation(format_coord, Coordinate.coords_down, ship_type, ship_size, player_ship_instance, player_board, ship_number, ship_letter, dict_name)       
             elif orientation.lower() == 'left':

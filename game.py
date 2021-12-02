@@ -21,6 +21,7 @@ class Game:
         self.player.ship_input_introduction()
 
     def game_set_ships(self):
+        print(self.player_board)
         self.player.ship_input('Carrier', 5, self.player_ships, self.player_board, '', 'C', 'Carrier')
         self.player.ship_input('Battleship', 4, self.player_ships, self.player_board, ' first', 'B', 'Battleship 1')
         self.player.ship_input('Battleship', 4, self.player_ships, self.player_board, ' second', 'B', 'Battleship 2')

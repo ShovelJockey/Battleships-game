@@ -82,10 +82,10 @@ class HumanPlayer:
         player_guess = input('enter a coordinate to shoot at   ')
         format_guess = self.format_input(player_guess)
         if format_guess == None:
-            self.player_guess(computer_ship_instance, computer_board_instance, player_instance)
+            return self.player_guess(computer_ship_instance, computer_board_instance, player_instance)
         if format_guess in self.guesses:
             print('Sorry you have already guessed this coordinate')
-            self.player_guess(computer_ship_instance, computer_board_instance, player_instance)
+            return self.player_guess(computer_ship_instance, computer_board_instance, player_instance)
         self.guesses.append(format_guess)
         if computer_ship_instance.does_this_hit(format_guess):
             print('you hit!')

@@ -42,8 +42,8 @@ class ComputerPlayer:
                 computer_ship_instance.place_ship(ship_location, dict_name)
 
     def computer_guess(self, player_ship_instance, player_board_instance, computer_instance):
-        if self.has_hit:
-            if self.checking_adjacent:
+        if self.has_hit:#fix issue where checking adjacent gets stuck when two ships are next to each other as it starts hitting the other ship thinking they are adjacent
+            if self.checking_adjacent:#not priting board is clue
                 self.comp_get_adj_guess(player_ship_instance, player_board_instance, computer_instance)
             else:
                 if self.adjacent_hit:
@@ -56,7 +56,7 @@ class ComputerPlayer:
     def rand_comp_guess(self, player_ship_instance, player_board_instance, computer_instance):
         comp_guess = (random.randint(0, 9), random.randint(0, 9))
         if comp_guess in self.guesses:
-            self.computer_guess(player_ship_instance, player_board_instance, computer_instance)
+            return self.computer_guess(player_ship_instance, player_board_instance, computer_instance)
         else:
             self.guesses.append(comp_guess)
             output_guess = Coordinate.index_to_user(comp_guess)
@@ -67,7 +67,7 @@ class ComputerPlayer:
                 sunk_ship = player_ship_instance.has_ship_sunk(computer_instance)
                 if sunk_ship:
                     sunk_ship = (sunk_ship[0]).split(' ', 1)
-                    print(f'You have sunk an enemy {sunk_ship}!')
+                    print(f'The computer has sunk your {sunk_ship}!')
                 else:
                     self.has_hit = True          
             else:
@@ -87,7 +87,7 @@ class ComputerPlayer:
             sunk_ship = player_ship_instance.has_ship_sunk(computer_instance)
             if sunk_ship:
                 sunk_ship = (sunk_ship[0]).split(' ', 1)
-                print(f'You have sunk an enemy {sunk_ship}!')
+                print(f'The computer has sunk your {sunk_ship}!')
                 self.has_hit = False
             else:
                 self.adjacent_hit_loc = comp_guess
@@ -112,7 +112,7 @@ class ComputerPlayer:
                 sunk_ship = player_ship_instance.has_ship_sunk(computer_instance)
                 if sunk_ship:
                     sunk_ship = (sunk_ship[0]).split(' ', 1)
-                    print(f'You have sunk an enemy {sunk_ship}!')
+                    print(f'The computer has sunk your {sunk_ship}!')
                     self.has_hit = False
                     self.adjacent_hit = False
                 else:
@@ -120,6 +120,10 @@ class ComputerPlayer:
             else:
                 print(f'The computer missed your ships shooting at {output_guess}')
                 player_board_instance.update_board(comp_guess, 'O')
+        else:
+            self.adjacent_hit = False
+            self.checking_adjacent = True
+            return self.computer_guess(player_ship_instance, player_board_instance, computer_instance)
 
     def comp_get_adj_guess(self, player_ship_instance, player_board_instance, computer_instance):
         avaliable_adjacent_coords = [x for x in self.adjacent_coords if x not in self.guesses]
@@ -133,10 +137,11 @@ class ComputerPlayer:
                 sunk_ship = player_ship_instance.has_ship_sunk(computer_instance)
                 if sunk_ship:
                     sunk_ship = (sunk_ship[0]).split(' ', 1)
-                    print(f'You have sunk an enemy {sunk_ship}!')
+                    print(f'The computer has sunk your {sunk_ship}!')
                     self.has_hit = False
                     self.checking_adjacent = False
                 else:
+                    self.adjacent_hit_loc = comp_guess
                     self.adjacent_hit = True
                     self.checking_adjacent = False
             else:
@@ -145,4 +150,4 @@ class ComputerPlayer:
         else:
             self.has_hit = False
             self.checking_adjacent = False
-            self.computer_guess(player_ship_instance, player_board_instance, computer_instance)
+            return self.computer_guess(player_ship_instance, player_board_instance, computer_instance)

@@ -38,8 +38,6 @@ class Game:
         self.computer.create_computer_ships(2, self.computer_ships, 'Submarine 1')
         self.computer.create_computer_ships(2, self.computer_ships, 'Submarine 2')
         self.computer.create_computer_ships(2, self.computer_ships, 'Submarine 3')
-        print(self.computer_ships.locations)
-        print(self.player_ships.locations)
 
     def game_running(self):
         while True:

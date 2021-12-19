@@ -9,8 +9,7 @@ class Ships:
         return any(x in locs for y in self.locations.values() for x in y)
 
     def check_start_loc(self, index):
-        if any(x for x in self.locations.values() if index in x):
-            return True
+        return any(x for x in self.locations.values() if index in x)
 
     def place_ship(self, location_value, ship_key):
         self.locations[ship_key] = location_value

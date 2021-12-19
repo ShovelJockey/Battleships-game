@@ -42,16 +42,16 @@ class ComputerPlayer:
                 computer_ship_instance.place_ship(ship_location, dict_name)
 
     def computer_guess(self, player_ship_instance, player_board_instance, computer_instance):
-        if self.has_hit:#fix issue where checking adjacent gets stuck when two ships are next to each other as it starts hitting the other ship thinking they are adjacent
-            if self.checking_adjacent:#not priting board is clue
-                self.comp_get_adj_guess(player_ship_instance, player_board_instance, computer_instance)
+        if self.has_hit:
+            if self.checking_adjacent:
+                self.comp_get_adj_guess(player_ship_instance, player_board_instance, computer_instance)#behaviour after random guess hit, if next guess out of adjacent coords is a miss.
             else:
                 if self.adjacent_hit:
-                    self.comp_found_adj_hit_guess(player_ship_instance, player_board_instance, computer_instance)
+                    self.comp_found_adj_hit_guess(player_ship_instance, player_board_instance, computer_instance)#behaviour if adjacent coord is also a hit, finds orientation of ship to guide further guesses.
                 else:
-                    self.comp_find_adj_hit_guess(player_ship_instance, player_board_instance, computer_instance)
+                    self.comp_find_adj_hit_guess(player_ship_instance, player_board_instance, computer_instance)#behaviour after a random guess hits, finds adjacent coords to hit and choses one.
         else:
-            self.rand_comp_guess(player_ship_instance, player_board_instance, computer_instance)
+            self.rand_comp_guess(player_ship_instance, player_board_instance, computer_instance)#default behaviour, a random guess which cannot be a previusly guessed coord.
 
     def rand_comp_guess(self, player_ship_instance, player_board_instance, computer_instance):
         comp_guess = (random.randint(0, 9), random.randint(0, 9))
@@ -134,16 +134,15 @@ class ComputerPlayer:
             if player_ship_instance.does_this_hit(comp_guess):
                 print(f'The computer has hit your ship at {output_guess}')
                 player_board_instance.update_board(comp_guess, 'X')
+                self.checking_adjacent = False
                 sunk_ship = player_ship_instance.has_ship_sunk(computer_instance)
                 if sunk_ship:
                     sunk_ship = (sunk_ship[0]).split(' ', 1)
                     print(f'The computer has sunk your {sunk_ship}!')
                     self.has_hit = False
-                    self.checking_adjacent = False
                 else:
                     self.adjacent_hit_loc = comp_guess
                     self.adjacent_hit = True
-                    self.checking_adjacent = False
             else:
                 print(f'The computer missed your ships shooting at {output_guess}')
                 player_board_instance.update_board(comp_guess, 'O')

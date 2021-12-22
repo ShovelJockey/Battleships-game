@@ -22,10 +22,25 @@ class PlayerTests(unittest.TestCase):
 
     def test_computer_guess(self):
         self.instance.computer_guess(self.test_Ships, self.test_board, self.instance)
+        assert len(self.instance.guesses) == 1
 
     def test_computer_guess_has_hit(self):
+        self.test_Ships.place_ship([(0,0),(0,1),(0,2)], 'submarine')
         self.instance.has_hit = True
         self.instance.last_rand_guess_loc = (0,0)
+        self.instance.guesses.append((0,0))
         self.instance.computer_guess(self.test_Ships, self.test_board, self.instance)
+        assert self.instance.guesses[1] == (0,1) or self.instance.guesses[1] == (1,0)
+
+    def test_computer_adj_has_hit(self):
+        self.test_Ships.place_ship([(0,0),(0,1),(0,2)], 'submarine')
+        self.instance.has_hit = True
+        self.instance.adjacent_hit = True
+        self.instance.last_rand_guess_loc = (0,0)
+        self.instance.adjacent_hit_loc = (0,1)
+        self.instance.guesses.append((0,0))
+        self.instance.guesses.append((0,1))
+        self.instance.computer_guess(self.test_Ships, self.test_board, self.instance)
+        assert self.instance.guesses[2] == (0,2)
 
 unittest.main()

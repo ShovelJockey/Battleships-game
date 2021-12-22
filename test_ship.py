@@ -38,11 +38,13 @@ class ShipsTests(unittest.TestCase):
         guess = (0,4)
         result = self.instance.does_this_hit(guess)
         self.assertTrue(result)
+        assert self.instance.hit_count == 1
 
     def test_does_this_hit_False(self):
         guess = (9,9)
         result = self.instance.does_this_hit(guess)
         self.assertFalse(result)
+        assert self.instance.hit_count == 0
 
     def test_has_ship_sunk(self):
         self.test_Player.guesses = [(0,0),(0,4),(0,3),(0,2),(0,1)]

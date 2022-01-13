@@ -82,7 +82,7 @@ class HumanPlayer:
 
     def player_guess(self, computer_ship_instance, computer_board_instance, player_instance):
         player_guess = input('enter a coordinate to shoot at   ')
-        format_guess = self.format_input(player_guess)
+        format_guess = self.format_input(player_guess, 10)
         if format_guess == None:
             return self.player_guess(computer_ship_instance, computer_board_instance, player_instance)
         if format_guess in self.guesses:
@@ -95,7 +95,7 @@ class HumanPlayer:
             sunk_ship = computer_ship_instance.has_ship_sunk(player_instance)
             if sunk_ship:
                 sunk_ship = (sunk_ship[0]).split(' ', 1)
-                print(f'You have sunk an enemy {sunk_ship}!')
+                print(f'You have sunk an enemy {sunk_ship[0]}!')
         else:
             print('you missed!')
             computer_board_instance.update_board(format_guess, 'O')

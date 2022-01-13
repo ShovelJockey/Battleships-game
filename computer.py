@@ -67,7 +67,7 @@ class ComputerPlayer:
                 sunk_ship = player_ship_instance.has_ship_sunk(computer_instance)
                 if sunk_ship:
                     sunk_ship = (sunk_ship[0]).split(' ', 1)
-                    print(f'The computer has sunk your {sunk_ship}!')
+                    print(f'The computer has sunk your {sunk_ship[0]}!')
                 else:
                     self.has_hit = True          
             else:
@@ -87,7 +87,7 @@ class ComputerPlayer:
             sunk_ship = player_ship_instance.has_ship_sunk(computer_instance)
             if sunk_ship:
                 sunk_ship = (sunk_ship[0]).split(' ', 1)
-                print(f'The computer has sunk your {sunk_ship}!')
+                print(f'The computer has sunk your {sunk_ship[0]}!')
                 self.has_hit = False
             else:
                 self.adjacent_hit_loc = comp_guess
@@ -112,7 +112,7 @@ class ComputerPlayer:
                 sunk_ship = player_ship_instance.has_ship_sunk(computer_instance)
                 if sunk_ship:
                     sunk_ship = (sunk_ship[0]).split(' ', 1)
-                    print(f'The computer has sunk your {sunk_ship}!')
+                    print(f'The computer has sunk your {sunk_ship[0]}!')
                     self.has_hit = False
                     self.adjacent_hit = False
                 else:
@@ -138,7 +138,7 @@ class ComputerPlayer:
                 sunk_ship = player_ship_instance.has_ship_sunk(computer_instance)
                 if sunk_ship:
                     sunk_ship = (sunk_ship[0]).split(' ', 1)
-                    print(f'The computer has sunk your {sunk_ship}!')
+                    print(f'The computer has sunk your {sunk_ship[0]}!')
                     self.has_hit = False
                 else:
                     self.adjacent_hit_loc = comp_guess
